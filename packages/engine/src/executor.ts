@@ -60,20 +60,23 @@ export class AlgorithmExecutor<State = unknown> {
     this.currentStep = 0;
 
     const startTime = Date.now();
-    let state = this.algorithm.execute(this.input).initialState as State;
+    let state = undefined as State;
 
     try {
+      // Build the trace once. Calling execute twice can duplicate work and
+      // break deterministic algorithms that consume a seed or mutable input.
       const fullTrace = this.algorithm.execute(this.input);
       this.trace = fullTrace;
+      state = fullTrace.initialState;
 
       for (let i = 0; i < fullTrace.events.length; i++) {
-        if (this.status === "paused") {
+        if ((this.status as ExecutionStatus) === "paused") {
           await this.waitForResume();
         }
         if (this.status !== "running") break;
 
         this.currentStep = i;
-        const event = fullTrace.events[i];
+        const event = fullTrace.events[i]!;
         state = event.stateAfter as State;
 
         this.onEventCallback?.(event, state);
@@ -82,7 +85,7 @@ export class AlgorithmExecutor<State = unknown> {
         await this.delayForSpeed();
       }
 
-      this.status = "completed";
+      this.status = this.status === "running" ? "completed" : this.status;
       this.onCompleteCallback?.(this.trace!);
       return this.trace!;
     } catch (error) {
@@ -176,7 +179,7 @@ export class AlgorithmExecutor<State = unknown> {
 
   replay(): void {
     this.reset();
-    this.execute({ input: this.input, seed: this.seed });
+    void this.execute({ algorithm: this.algorithm, input: this.input, seed: this.seed });
   }
 
   goToStep(step: number): void {
