@@ -119,6 +119,30 @@ export function runTestCase(
         );
       }
     }
+    if (expectation.predicate === 'index-of-value') {
+      // Contract for "any matching index": null must mean genuinely absent, and
+      // a non-null result must actually point at an occurrence of the target.
+      const arg = (expectation.predicateArg ??
+        testCase.input) as { values?: unknown; target?: unknown };
+      const values = Array.isArray(arg.values) ? (arg.values as unknown[]) : undefined;
+      const target = arg.target;
+      if (subject === null || subject === undefined) {
+        if (values?.includes(target)) {
+          failures.push(`expected a matching index for target ${stableStringify(target)}, got null`);
+        }
+      } else if (
+        !values ||
+        typeof subject !== 'number' ||
+        !Number.isInteger(subject) ||
+        subject < 0 ||
+        subject >= values.length ||
+        values[subject] !== target
+      ) {
+        failures.push(
+          `result ${stableStringify(subject)} does not point at an element equal to target ${stableStringify(target)}`
+        );
+      }
+    }
   }
   if (expectation.eventTypes) {
     const seen = new Set(trace.events.map((event) => event.type));
