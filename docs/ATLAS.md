@@ -6,14 +6,14 @@
 ## Scope
 
 - 330 algorithms planned across 14 categories (Cinematic Atlas).
-- 1 implemented and routable today (0% coverage).
+- 2 implemented and routable today (1% coverage).
 - The sidebar lists only *live* algorithms; planned entries stay indexed until they satisfy the definition of done.
 
 ## Categories & coverage
 
 | Category | Atlas pages | Planned | Live | Coverage |
 | --- | --- | ---: | ---: | ---: |
-| Arrays & Searching | Atlas §Arrays & Searching (25 algorithms) | 25 | 0 | 0% |
+| Arrays & Searching | Atlas §Arrays & Searching (25 algorithms) | 25 | 1 | 4% |
 | Sorting | Atlas §Sorting (18 algorithms) | 18 | 1 | 6% |
 | Linked Lists | Atlas §Linked Lists (18 algorithms) | 18 | 0 | 0% |
 | Stacks, Queues & Hashing | Atlas §Stacks Queues Hashing (21 algorithms) | 21 | 0 | 0% |
@@ -32,6 +32,7 @@
 
 | Algorithm | Category | Difficulty | Source |
 | --- | --- | --- | --- |
+| Binary Search (`binary-search`) | arrays-searching | easy | [`src/algorithms/searching/binary-search.ts`](../src/algorithms/searching/binary-search.ts) |
 | Bubble Sort (`bubble-sort`) | sorting | easy | [`src/algorithms/sorting/bubble-sort.ts`](../src/algorithms/sorting/bubble-sort.ts) |
 
 ## Definition of done

@@ -89,7 +89,11 @@ export function playerReducer(
       return { ...state, index, playing: state.playing && action.total > 0 };
     }
     case 'turn': {
-      // Fired by the auto-play timer: advance or stop at the end of the trace.
+      // Fired by the auto-play timer. The hook only arms that timer while
+      // `playing` is true and clears it on pause/reset, so a `turn` that
+      // arrives with `playing === false` is a stale tick and must not advance
+      // the position (review §16/§17 — no orphaned callbacks may move state).
+      if (!state.playing) return { ...state, playing: false };
       if (atEnd) return { ...state, playing: false };
       const nextIndex = clampIndex(state.index + 1, total);
       return { ...state, index: nextIndex, playing: nextIndex < total };

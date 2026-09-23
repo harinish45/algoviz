@@ -562,7 +562,20 @@ export interface TestExpectation {
   /** Exact expected result (compared structurally). */
   result?: unknown;
   /** Name of a structural predicate applied to the result. */
-  predicate?: 'sorted' | 'sorted-stable' | 'permutation-of-input' | 'non-decreasing' | 'partitioned';
+  predicate?:
+    | 'sorted'
+    | 'sorted-stable'
+    | 'permutation-of-input'
+    | 'non-decreasing'
+    | 'partitioned'
+    /**
+     * `index-of-value`: the result is `null` exactly when the target is absent,
+     * otherwise an integer index inside `predicateArg.values` (or the input's
+     * own `values`) whose element equals `predicateArg.target`. Use this when
+     * several indices are equally valid answers (e.g. binary search over
+     * duplicates) instead of hard-coding one occurrence as the expectation.
+     */
+    | 'index-of-value';
   /**
    * Property of the result the predicate applies to, e.g. `sorted` when the
    * algorithm returns `{ sorted, comparisons }`. Empty means the result itself.

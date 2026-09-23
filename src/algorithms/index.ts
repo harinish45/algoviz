@@ -1,5 +1,6 @@
 import type { AnyAlgorithmDefinition } from '../core/types';
 import { bubbleSort } from './sorting/bubble-sort';
+import { binarySearch } from './searching/binary-search';
 
 /**
  * Algorithm atlas index.
@@ -9,4 +10,7 @@ import { bubbleSort } from './sorting/bubble-sort';
  * algorithm means adding one import + one array entry; nothing else changes.
  * Use `npm run scaffold -- <category> <name>` to generate a compliant file.
  */
-export const ALGORITHMS: AnyAlgorithmDefinition[] = [bubbleSort];
+export const ALGORITHMS: AnyAlgorithmDefinition[] = [
+  bubbleSort,
+  binarySearch
+];
